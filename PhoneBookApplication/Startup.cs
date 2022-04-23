@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PhoneBookApplication.Extensions;
+using PhoneBookApplication.Infrastructure.Data.DatabaseContexts;
 using PhoneBookApplication.Infrastructure.Services.Implementation;
 using PhoneBookApplication.Infrastructure.Services.Interface;
 using System;
@@ -29,8 +31,10 @@ namespace PhoneBookApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            //services.AddScoped<IContactsService, ContactsService>();
+            services.AddDbContext<PhoneBookDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
+            );
+            services.AddScoped<IContactsService, ContactsService>();
             services.AddControllers();
             services.AddSwagger();
             

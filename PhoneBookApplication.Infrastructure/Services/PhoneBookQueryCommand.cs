@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using PhoneBookApplication.Core.Models;
 using PhoneBookApplication.Core.Services.InfrastructureServices;
 using PhoneBookApplication.Infrastructure.Data.DatabaseContexts;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PhoneBookApplication.Infrastructure.Services
 {
-    public class PhoneBookQueryCommand<T> : IPhoneBookQueryCommand<T> where T : class
+    public class PhoneBookQueryCommand<T> : IPhoneBookQueryCommand<T> where T : class, IEntityBase, new()
     {
         private readonly PhoneBookDbContext _context;
 
@@ -45,13 +46,13 @@ namespace PhoneBookApplication.Infrastructure.Services
             return await query.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
+        public async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FirstOrDefaultAsync(n => n.Id == id);
 
         public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
-            return await query.FirstOrDefaultAsync();
+            return await query.FirstOrDefaultAsync(n => n.Id == id);
 
         }
 
