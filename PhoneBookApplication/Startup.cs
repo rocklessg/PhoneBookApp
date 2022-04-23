@@ -35,6 +35,11 @@ namespace PhoneBookApplication
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
             services.AddScoped<IContactsService, ContactsService>();
+
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+
+
             services.AddControllers();
             services.AddSwagger();
             
