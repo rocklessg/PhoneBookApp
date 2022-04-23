@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PhoneBookApplication.Extensions;
+using PhoneBookApplication.Infrastructure.Services.Implementation;
+using PhoneBookApplication.Infrastructure.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +30,10 @@ namespace PhoneBookApplication
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //services.AddScoped<IContactsService, ContactsService>();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PhoneBookApplication", Version = "v1" });
-            });
+            services.AddSwagger();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +43,7 @@ namespace PhoneBookApplication
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PhoneBookApplication v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PhoneBookApp v1"));
             }
 
             app.UseHttpsRedirection();
