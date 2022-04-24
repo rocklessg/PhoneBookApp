@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PhoneBookApplication.Extensions;
 using PhoneBookApplication.Infrastructure.Data.DatabaseContexts;
+using PhoneBookApplication.Infrastructure.Extensions;
+using PhoneBookApplication.Infrastructure.Helpers;
 using PhoneBookApplication.Infrastructure.Services.Implementation;
 using PhoneBookApplication.Infrastructure.Services.Interface;
 using System;
@@ -34,10 +37,16 @@ namespace PhoneBookApplication
             services.AddDbContext<PhoneBookDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
-            services.AddScoped<IContactsService, ContactsService>();
+
+            services.ResolveAPICors(Configuration);
+            services.ResolveCoreServices();
+            services.ResolveInfrastructureServices();
 
             services.AddAuthentication();
             services.ConfigureIdentity();
+
+            services.AddAutoMapper(typeof(MapperInitializer));
+
 
 
             services.AddControllers();
