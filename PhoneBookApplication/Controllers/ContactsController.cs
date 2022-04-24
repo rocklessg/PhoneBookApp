@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using PhoneBookApplication.Core.Entities;
 using PhoneBookApplication.Core.Models.DTO;
 using PhoneBookApplication.Core.Services.InfrastructureServices;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PhoneBookApplication.Controllers
@@ -152,6 +154,32 @@ namespace PhoneBookApplication.Controllers
             await _phoneBookQueryCommand.DeleteAsync(id);
 
             return NoContent();
+        }
+
+        [HttpGet("filter")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> FilterByNameOrPhoneNumberAsync(string searchString)
+        {
+            var allContacts = await _phoneBookQueryCommand.GetAllAsync();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var filteredresult = allContacts.Where(c =>
+                string.Equals(c.Name, searchString,
+                StringComparison.CurrentCultureIgnoreCase) ||
+                string.Equals(c.PhoneNumber, searchString,
+                StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+                if (filteredresult.Count == 0)
+                {
+                    _logger.LogError($"Invalid Filter attempt in {nameof(FilterByNameOrPhoneNumberAsync)}");
+                    return NotFound("Search not found");
+                }
+
+                return Ok(filteredresult);
+            }
+            return BadRequest();
         }
     }
 }
