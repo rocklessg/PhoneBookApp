@@ -38,7 +38,7 @@ namespace PhoneBookApplication
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
 
-            services.ResolveAPICors(Configuration);
+            //services.ResolveAPICors(Configuration);
             services.ResolveCoreServices();
             services.ResolveInfrastructureServices();
 
@@ -47,7 +47,7 @@ namespace PhoneBookApplication
 
             services.AddAutoMapper(typeof(MapperInitializer));
 
-
+            services.AddCors();
 
             services.AddControllers();
             services.AddSwagger();
@@ -57,6 +57,12 @@ namespace PhoneBookApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(opt =>
+            opt.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            );
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -64,9 +70,11 @@ namespace PhoneBookApplication
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PhoneBookApp v1"));
             }
 
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            //app.ConfigureCors(Configuration);
 
             app.UseAuthorization();
 
