@@ -25,7 +25,7 @@ namespace PhoneBookApplication.Extensions
                     corsOptions.AddPolicy("DenyAllHost",
                                       corsPolicyBuilder => corsPolicyBuilder
                                       .AllowAnyHeader()
-                                      .WithMethods(new string[3] { "POST", "PATCH", "HEAD" })
+                                      .WithMethods(new string[4] { "POST", "PATCH", "HEAD", "GET" })
                                      );
                 else if (allowedHosts == "*")
                 {
@@ -47,7 +47,7 @@ namespace PhoneBookApplication.Extensions
                     corsOptions.AddPolicy("AllowAll",
                                       corsPolicyBuilder => corsPolicyBuilder
                                       .AllowAnyHeader()
-                                      .WithOrigins(allowedHostArray)
+                                      .WithOrigins("http://localhost:3000")
                                       .WithMethods(new string[3] { "POST", "PATCH", "HEAD" })
                                      );
                 }
