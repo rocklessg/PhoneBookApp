@@ -46,6 +46,7 @@ namespace PhoneBookApplication
 
             services.AddAuthentication();
             services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
 
             services.AddAutoMapper(typeof(MapperInitializer));
             services.AddScoped<IAuthManager, AuthManager>();
