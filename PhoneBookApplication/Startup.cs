@@ -9,10 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PhoneBookApplication.Core.Services.InfrastructureServices;
 using PhoneBookApplication.Extensions;
 using PhoneBookApplication.Infrastructure.Data.DatabaseContexts;
 using PhoneBookApplication.Infrastructure.Extensions;
 using PhoneBookApplication.Infrastructure.Helpers;
+using PhoneBookApplication.Infrastructure.Services;
 using PhoneBookApplication.Infrastructure.Services.Implementation;
 using PhoneBookApplication.Infrastructure.Services.Interface;
 using System;
@@ -46,6 +48,7 @@ namespace PhoneBookApplication
             services.ConfigureIdentity();
 
             services.AddAutoMapper(typeof(MapperInitializer));
+            services.AddScoped<IAuthManager, AuthManager>();
 
             services.AddCors();
 
