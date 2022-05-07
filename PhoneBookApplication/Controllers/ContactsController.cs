@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -127,7 +128,7 @@ namespace PhoneBookApplication.Controllers
             return NoContent();
         }
 
-        //[Authorize]
+        [Authorize(Roles = "User")]
         /// <summary>
         /// Delete an existing contact.
         /// </summary>

@@ -15,6 +15,7 @@ namespace PhoneBookApplication.Infrastructure.Helpers
         {
             CreateMap<Contact, ContactRequestDTO>().ReverseMap();
             CreateMap<Contact, ContactResponseDTO>().ReverseMap();
+            CreateMap<AppUser, UserDTO>().ReverseMap();
 
         }
     }
