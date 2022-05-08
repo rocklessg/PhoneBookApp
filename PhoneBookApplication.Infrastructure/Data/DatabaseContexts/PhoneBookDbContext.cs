@@ -17,5 +17,12 @@ namespace PhoneBookApplication.Infrastructure.Data.DatabaseContexts
         }
 
         public DbSet<Contact> Contacts { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfiguration(new RoleConfiguration());
+        }
     }
 }

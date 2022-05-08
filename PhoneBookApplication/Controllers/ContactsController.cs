@@ -128,7 +128,7 @@ namespace PhoneBookApplication.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
         /// <summary>
         /// Delete an existing contact.
         /// </summary>

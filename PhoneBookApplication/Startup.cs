@@ -80,9 +80,10 @@ namespace PhoneBookApplication
             app.UseRouting();
             //app.ConfigureCors(Configuration);
 
-            app.UseAuthorization();
 
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
