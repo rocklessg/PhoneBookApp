@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PhoneBookApplication.Core.Entities;
 using PhoneBookApplication.Core.Models.DTO;
+using PhoneBookApplication.Core.Models.Pagination;
 using PhoneBookApplication.Core.Services.InfrastructureServices;
 using System;
 using System.Collections.Generic;
@@ -39,9 +40,9 @@ namespace PhoneBookApplication.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllContactsAsync()
+        public async Task<IActionResult> GetAllContactsAsync([FromQuery] RequestParams requestParams)
         {
-            var contacts = await _phoneBookQueryCommand.GetAllAsync();
+            var contacts = await _phoneBookQueryCommand.GetAllAsync(requestParams);
             var results = _mapper.Map<IList<ContactResponseDTO>>(contacts);
             return Ok(results);
         }
