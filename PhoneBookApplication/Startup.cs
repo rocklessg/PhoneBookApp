@@ -74,7 +74,8 @@ namespace PhoneBookApplication
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PhoneBookApp v1"));
             }
 
-            
+            app.ConfigureExceptionhandler();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

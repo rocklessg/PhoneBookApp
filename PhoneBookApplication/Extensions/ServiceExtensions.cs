@@ -1,10 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PhoneBookApplication.Core.Entities;
 using PhoneBookApplication.Infrastructure.Data.DatabaseContexts;
+using PhoneBookApplication.Middleware;
+using Serilog;
 using System;
 using System.Text;
 
@@ -47,6 +52,29 @@ namespace PhoneBookApplication.Extensions
                     ValidIssuer = jwtSettings.GetSection("Issuer").Value,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
                 };
+            });
+        }
+
+        public static void ConfigureExceptionhandler(this IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(error =>
+            {
+                error.Run(async context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                    context.Response.ContentType = "application/json";
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if (contextFeature != null)
+                    {
+                        Log.Error($"Something Went Wrong in the {contextFeature.Error}");
+
+                        await context.Response.WriteAsync(new GlobalExceptionHandler
+                        {
+                            StatusCode = context.Response.StatusCode,
+                            ErrorMessage = "Internal Server Error. Please Try Again Later. Thank You."
+                        }.ToString());
+                    }
+                });
             });
         }
     }
