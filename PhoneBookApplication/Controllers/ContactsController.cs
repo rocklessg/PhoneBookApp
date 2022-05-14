@@ -36,6 +36,7 @@ namespace PhoneBookApplication.Controllers
         /// </summary>
         ///<response code="200">Returned all phonebook entries or empty array</response>
         ///
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -52,6 +53,7 @@ namespace PhoneBookApplication.Controllers
         /// </summary>
         ///<response code="200">Returned single phonebook entry or empty array</response>
         ///
+        [Authorize]
         [HttpGet("{id:int}", Name = "GetContactAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -76,7 +78,7 @@ namespace PhoneBookApplication.Controllers
         /// </summary>
         ///<response code="201">Returned for entry added successfuly</response>
         ///
-        //[Authorize(Roles = "Administrator")]
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -107,7 +109,7 @@ namespace PhoneBookApplication.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> UpdateContactAsync(int id, [FromBody] UpdateContactDTO contactDto)
         {
             if (!ModelState.IsValid || id < 1)
@@ -158,6 +160,7 @@ namespace PhoneBookApplication.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpGet("filter")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

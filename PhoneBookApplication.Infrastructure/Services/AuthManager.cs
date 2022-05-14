@@ -34,8 +34,6 @@ namespace PhoneBookApplication.Infrastructure.Services
             var claims = await GetClaims();
             var token = GenerateTokenOptions(signingCredentials, claims);
             return new JwtSecurityTokenHandler().WriteToken(token);
-
-
         }
 
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
@@ -82,12 +80,8 @@ namespace PhoneBookApplication.Infrastructure.Services
         {
             _user = await _userManager.FindByNameAsync(userDTO.Email);
             var validPassword = await _userManager.CheckPasswordAsync(_user, userDTO.Password);
-            return (
-                _user != null && validPassword);
-
+            return (_user != null && validPassword);
         }
-    }
-
-    
+    }    
 }
 
