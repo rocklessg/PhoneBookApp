@@ -45,29 +45,22 @@ namespace PhoneBookApplication.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                var user = _mapper.Map<AppUser>(userDTO);
-                user.UserName = userDTO.Email;
-                var result = await _userManager.CreateAsync(user, userDTO.Password);
 
-                if (!result.Succeeded)
+            var user = _mapper.Map<AppUser>(userDTO);
+            user.UserName = userDTO.Email;
+            var result = await _userManager.CreateAsync(user, userDTO.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
-                    return BadRequest(ModelState);
+                    ModelState.AddModelError(error.Code, error.Description);
                 }
-                await _userManager.AddToRolesAsync(user, userDTO.Roles);
-                return Accepted();
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
+            await _userManager.AddToRolesAsync(user, userDTO.Roles);
+            return Accepted();
 
-                _logger.LogError(ex, $"Something went wrong in the {nameof(Register)}");
-                return Problem($"Something went wrong in the {nameof(Register)}", statusCode: 500);
-            }
         }
 
         [HttpPost]
@@ -81,20 +74,12 @@ namespace PhoneBookApplication.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
+            if (!await _authManager.ValidateUser(userDTO))
             {
-                if (!await _authManager.ValidateUser(userDTO))
-                {
-                    return Unauthorized(); //401 status code
-                }
-                return Accepted(new { Token = await _authManager.CreateToken() });
+                return Unauthorized(); //401 status code
             }
-            catch (Exception ex)
-            {
+            return Accepted(new { Token = await _authManager.CreateToken() });
 
-                _logger.LogError(ex, $"Something Went Wrong in the {nameof(Login)}");
-                return Problem($"Something Went Wrong in the {nameof(Login)}", statusCode: 500); ;
-            }
         }
     }
 }
