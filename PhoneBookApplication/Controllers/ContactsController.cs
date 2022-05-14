@@ -43,6 +43,7 @@ namespace PhoneBookApplication.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllContactsAsync([FromQuery] RequestParams requestParams)
         {
+            throw new Exception();
             var contacts = await _phoneBookQueryCommand.GetAllAsync(requestParams);
             var results = _mapper.Map<IList<ContactResponseDTO>>(contacts);
             return Ok(results);
@@ -93,7 +94,7 @@ namespace PhoneBookApplication.Controllers
 
             var contact = _mapper.Map<Contact>(contactDto);
             await _phoneBookQueryCommand.AddAsync(contact);
-            
+
             return CreatedAtRoute("GetContactAsync", new { id = contact.Id }, contact);
         }
 
@@ -124,7 +125,7 @@ namespace PhoneBookApplication.Controllers
                 _logger.LogError($"Invalid UPDATE attempt in {nameof(UpdateContactAsync)}");
                 return BadRequest(ModelState);
             }
-            
+
             _mapper.Map(contactDto, contact);
             await _phoneBookQueryCommand.UpdateAsync(contact);
 
