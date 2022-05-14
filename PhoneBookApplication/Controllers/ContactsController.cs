@@ -43,7 +43,6 @@ namespace PhoneBookApplication.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllContactsAsync([FromQuery] RequestParams requestParams)
         {
-            throw new Exception();
             var contacts = await _phoneBookQueryCommand.GetAllAsync(requestParams);
             var results = _mapper.Map<IList<ContactResponseDTO>>(contacts);
             return Ok(results);
