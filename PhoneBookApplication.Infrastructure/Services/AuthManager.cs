@@ -68,7 +68,7 @@ namespace PhoneBookApplication.Infrastructure.Services
             return claims;
         }
 
-        private SigningCredentials GetSigningCredentials()
+        private static SigningCredentials GetSigningCredentials()
         {
             var key = Environment.GetEnvironmentVariable("KEY");
             var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));

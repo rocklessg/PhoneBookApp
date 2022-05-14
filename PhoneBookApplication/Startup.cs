@@ -44,6 +44,8 @@ namespace PhoneBookApplication
             services.ResolveCoreServices();
             services.ResolveInfrastructureServices();
 
+            services.ConfigureHttpCacheHeaders();
+
             services.AddAuthentication();
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
@@ -77,6 +79,8 @@ namespace PhoneBookApplication
             app.ConfigureExceptionhandler();
 
             app.UseHttpsRedirection();
+
+            app.UseHttpCacheHeaders();
 
             app.UseRouting();
             //app.ConfigureCors(Configuration);
