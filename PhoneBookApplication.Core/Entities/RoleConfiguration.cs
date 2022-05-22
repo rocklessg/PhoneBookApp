@@ -14,7 +14,6 @@ namespace PhoneBookApplication.Core.Entities
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
             builder.HasData(
-                
                 new IdentityRole
                 {
                     Name = "User",

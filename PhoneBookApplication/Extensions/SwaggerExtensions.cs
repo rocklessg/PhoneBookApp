@@ -11,9 +11,10 @@ namespace PhoneBookApplication.Extensions
             // This method gets called by the runtime from the startup "ConfigureServices()" to add swagger.
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
                     Title = "Phonebook API",
-                    Version = "v1",                
+                    Version = "v1",
                     Description = @"API service for creating, deleting, and updating phonebook entries",
                     Contact = new OpenApiContact
                     {
@@ -22,7 +23,7 @@ namespace PhoneBookApplication.Extensions
                     }
                 });
 
-                // To Enable authorization using Swagger (JWT) 
+                // To Enable authorization using Swagger (JWT)
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
