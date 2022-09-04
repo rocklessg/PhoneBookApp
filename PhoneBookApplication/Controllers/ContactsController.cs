@@ -131,13 +131,13 @@ namespace PhoneBookApplication.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin")]
         /// <summary>
         /// Delete an existing contact.
         /// </summary>
         ///<response code="204">Returned when contact deleted successfully</response>
         ///<response code="404">Returned when contact not found</response>
         ///
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
